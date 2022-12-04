@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+service Greeter {
+  rpc SayHelloUnary (HelloRequest) returns ( HelloReply);
+  rpc SayHelloServerStreaming (google.protobuf.Empty) returns (stream HelloReply);
+  rpc SayHelloClientStreaming (stream HelloRequest) returns (HelloReply);
+  rpc SayHelloDuplexStreaming (stream HelloRequest) returns (stream HelloReply);
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloReply {
+  string message = 1;
+}
