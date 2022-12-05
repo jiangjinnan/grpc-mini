@@ -16,7 +16,7 @@ public class ServiceBinder<TService> : IServiceBinder<TService> where TService :
         where TResponse : IMessage<TResponse>
     {
         Task<TResponse> GetMethod(TService service, TRequest request, ServerCallContext context) => methodAccessor(service)(request, context);
-        var callHandler = new UnaryServerCallHandler<TService, TRequest, TResponse>(GetMethod, parser);
+        var callHandler = new UnaryCallHandler<TService, TRequest, TResponse>(GetMethod, parser);
         _routeBuilder.MapPost(ServiceBinder<TService>.GetPath(methodName), callHandler.HandleCallAsync);
         return this;
     }
@@ -65,9 +65,9 @@ public class ServiceBinder<TService> : IServiceBinder<TService> where TService :
         where TRequest : IMessage<TRequest>
         where TResponse : IMessage<TResponse>
     {
-        var method = CreateDelegate<UnaryServerMethod<TService, TRequest,TResponse>>(methodAccessor, out var methodName);
+        var method = CreateDelegate<UnaryMethod<TService, TRequest,TResponse>>(methodAccessor, out var methodName);
         var serviceName = typeof(TService).GetCustomAttribute<GrpcServiceAttribute>()?.ServiceName ?? typeof(TService).Name;
-        var callHandler = new UnaryServerCallHandler<TService, TRequest, TResponse>(method, parser);
+        var callHandler = new UnaryCallHandler<TService, TRequest, TResponse>(method, parser);
         _routeBuilder.MapPost(ServiceBinder<TService>.GetPath(methodName), callHandler.HandleCallAsync);
         return this;
     }

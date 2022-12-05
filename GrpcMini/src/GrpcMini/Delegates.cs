@@ -2,7 +2,7 @@
 
 namespace GrpcMini
 {
-public delegate Task<TResponse> UnaryServerMethod<TService, TRequest, TResponse>(TService service, TRequest request, ServerCallContext context)
+public delegate Task<TResponse> UnaryMethod<TService, TRequest, TResponse>(TService service, TRequest request, ServerCallContext context)
     where TService : class
     where TRequest : IMessage<TRequest>
     where TResponse : IMessage<TResponse>;
